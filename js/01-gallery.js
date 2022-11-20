@@ -30,38 +30,38 @@ const createGalleryItmesMarkup = (options) => {
 
 const createModalWithOriginalImg = () => {
 
-  galleryBox.onclick = (event) => {
+  galleryBox.addEventListener('click', (event) => {
     event.preventDefault()
     
-
-    const originalImgSrc = event.target.dataset.source;
-    
-    const createdModalImg = basicLightbox.create(`
-    <img width="1400" height="900" src="${originalImgSrc}">
-    `)
-
     if (event.target.nodeName !== 'IMG') {
       return
     }
-    createdModalImg.show()
-    
 
-    // closed modal by esc
+    const originalImgSrc = event.target.dataset.source;
+    const imgModalMarkup = `
+    <img width="1400" height="900" src="${originalImgSrc}">
+    ` 
+    const imgModalOptions = {
+      onShow: (createdModalImg) => {
+        document.addEventListener('keydown', closeModalImgByEsc)
+      },
+      onClose: (createdModalImg) => {
+        document.removeEventListener('keydown', closeModalImgByEsc)
+      }
+    }
 
     const closeModalImgByEsc = (e) => {
+      console.log(e.code);
       if (e.code === 'Escape') {
         createdModalImg.close()
         window.removeEventListener('keydown', closeModalImgByEsc)
       }
     }
-    
-    if (createdModalImg.visible()) {
-      window.addEventListener('keydown', closeModalImgByEsc)
-    } 
-    
-    
-  }
-  
+
+    const createdModalImg = basicLightbox.create(imgModalMarkup,imgModalOptions)
+
+    createdModalImg.show()
+  }) 
 }
 
 
