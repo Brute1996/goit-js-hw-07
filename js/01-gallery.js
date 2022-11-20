@@ -51,10 +51,8 @@ const createModalWithOriginalImg = () => {
     }
 
     const closeModalImgByEsc = (e) => {
-      console.log(e.code);
       if (e.code === 'Escape') {
         createdModalImg.close()
-        window.removeEventListener('keydown', closeModalImgByEsc)
       }
     }
 
